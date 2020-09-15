@@ -28,7 +28,7 @@ func main() {
 	defer db.Close()
 
 	//http.Handle("/", http.FileServer(http.Dir("./src")))
-	http.HandleFunc("/todoList/data", handleIndex)
+	http.HandleFunc("/todoList", handleIndex)
 	port := "8000"
 	log.Printf("listening port %s", port)
 	log.Print(http.ListenAndServe(":"+port, nil))
