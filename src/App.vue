@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="divTable">
     <myheader></myheader>
-    <p v-if="msg.length > 0">{{ msg }}</p>
+    <p v-if="msg.length > 0">{{ msg[0].id }}</p>
     <p v-else>no text</p>
-    <input type="text" v-model="msg" />
+    <input type="text" v-model="msg[0].name" />
     <button @click="clear()">clear</button>
   </div>
 </template>
@@ -26,14 +26,13 @@ export default {
     },
   },
   created() {
-    fetch(
-      "http://www.geonames.org/postalCodeLookupJSON?postalcode=10504&country=US"
-    )
+    fetch("http://localhost:8000/todoList/data")
       .then((response) => {
         return response.json();
       })
       .then((json) => {
-        this.msg = json.postalcodes[0].adminName1;
+        console.log(json);
+        this.msg = json;
       })
       .catch((err) => {
         this.msg = err; // エラー処理
