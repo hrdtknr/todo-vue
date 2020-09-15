@@ -52,6 +52,7 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Access-Control-Allow-Origin", "*")// add
 		w.Write([]byte(res))
 	case http.MethodPost:
+		log.Println("Post")
 		if err := json.NewDecoder(r.Body).Decode(&todoDecode); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
