@@ -1,42 +1,49 @@
 <template>
   <div>
-    {{ data }}
-    <table border>
-      <tr>
-        <th>県名</th>
-        <th>県庁所在地</th>
-      </tr>
-      <tr>
-        <td>茨城県</td>
-        <td>水戸市</td>
-      </tr>
-      <tr>
-        <td>栃木県</td>
-        <td>宇都宮市</td>
-      </tr>
+    <v-card-actions>
+      <v-btn @click="sendRequest()">test</v-btn>
+    </v-card-actions>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NAME</th>
+          <th>TODO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="todo in todoList" :key="todo.id">
+          <td>{{ todo.id }}</td>
+          <td>{{ todo.name }}</td>
+          <td>{{ todo.todo }}</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
-      data: "",
+      todoList: null,
     };
   },
-  created() {
-    fetch("http://localhost:8000/todoList")
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        console.log(json);
-        this.data = json;
-      })
-      .catch((err) => {
-        this.data = err; // エラー処理
+  mounted() {
+    axios
+      .get("http://localhost:8000/todoList")
+      .then((response) => (this.todoList = response.data))
+      .catch((error) => console.log(error));
+  },
+  methods: {
+    sendRequest: function() {
+      axios.post("http://localhost:8000/todoList", {
+        id: 1,
+        name: "json name",
+        todo: "json todo",
       });
+    },
   },
 };
 </script>

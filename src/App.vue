@@ -1,31 +1,17 @@
 <template>
   <div class="divTable">
-    <myheader></myheader>
-    <ul v-for="m in data" :key="m.id">
-      {{
-        m.id
-      }},
-      {{
-        m.name
-      }},
-      {{
-        m.todo
-      }}
-    </ul>
+    <newTodo></newTodo>
     <todoTable></todoTable>
-    <Tes msg2="data" />
   </div>
 </template>
 
 <script>
-import myheader from "./components/myheader";
 import todoTable from "./components/todoTable";
-import Tes from "./components/Test";
+import newTodo from "./components/newTodo";
 export default {
   components: {
-    myheader,
     todoTable,
-    Tes,
+    newTodo,
   },
   data() {
     return {
@@ -44,7 +30,6 @@ export default {
         return response.json();
       })
       .then((json) => {
-        console.log(json);
         this.data = json;
       })
       .catch((err) => {
