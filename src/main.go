@@ -49,7 +49,8 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Header().Add("Access-Control-Allow-Origin", "*")// add
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE")
 		w.Write([]byte(res))
 	case http.MethodPost:
 		log.Println("Post")
