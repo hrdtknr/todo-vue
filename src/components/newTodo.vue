@@ -1,15 +1,32 @@
 <template>
   <div>
     <form class="newTodoForm">
-      <input type="text" id="newName" placeholder="Name" />
-      <input type="text" id="newTodo" placeholder="Todo" />
-      <input type="button" onclick="createTodo()" value="新規TODO追加" />
+      <input v-model="newName" placeholder="new name" />
+      <input v-model="newTodo" placeholder="new todo" />
+      <button v-on:click="createTodo()" />
     </form>
+    <p>new name is {{ newName }}</p>
+    <p>new todo is {{ newTodo }}</p>
   </div>
 </template>
 <script>
-createTodo();
-function createTodo() {
-  console.log("newtodo");
-}
+import axios from "axios";
+export default {
+  data() {
+    return {
+      newName: "",
+      newTodo: "",
+    };
+  },
+  methods: {
+    createTodo: function() {
+      // ok
+      console.log("uanirweganiug");
+      axios.post("http://localhost:8000/todoList", {
+        name: this.newName,
+        todo: this.newTodo,
+      });
+    },
+  },
+};
 </script>

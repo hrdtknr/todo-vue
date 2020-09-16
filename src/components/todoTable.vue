@@ -34,7 +34,13 @@ export default {
   mounted() {
     axios
       .get("http://localhost:8000/todoList")
-      .then((response) => (this.todoList = response.data))
+      .then(
+        (response) => (
+          console.log("axios get"),
+          console.log(response),
+          (this.todoList = response.data)
+        )
+      )
       .catch((error) => console.log(error));
   },
   methods: {

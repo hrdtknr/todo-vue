@@ -36,6 +36,9 @@ func main() {
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
 	var todoDecode Todo
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 	switch r.Method {
 	case http.MethodGet:
 		todoList, err := getTodos()
@@ -49,15 +52,14 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE")
 		w.Write([]byte(res))
 	case http.MethodPost:
-		log.Println("Post")
+		log.Println("Post") // test
 		if err := json.NewDecoder(r.Body).Decode(&todoDecode); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+		log.Println(todoDecode.Name, todoDecode.Todo) // test
 		if err := saveTodo(todoDecode.Name, todoDecode.Todo); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
