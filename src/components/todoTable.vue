@@ -6,7 +6,6 @@
           <th>ID</th>
           <th>NAME</th>
           <th>TODO</th>
-          <th>EDIT</th>
           <th>DELETE</th>
         </tr>
       </thead>
@@ -14,13 +13,16 @@
         <tr v-for="todo in todoList" :key="todo.id">
           <td>{{ todo.id }}</td>
           <td>{{ todo.name }}</td>
-          <td>{{ todo.todo }}</td>
-          <td>
-            <form>
-              <input v-model="updName" />
-              <input v-model="updTodo" />
-              <button v-on:click="updateTest(todo)">更新</button>
-            </form>
+
+          <td v-if="!isUpdTodo" v-on:dblclick="isUpdTodo = true">
+            {{ todo.todo }}
+          </td>
+          <td v-else>
+            <input
+              type="text"
+              v-model="todo.todo"
+              v-on:keyup.enter="updateTest(todo)"
+            />
           </td>
           <td>
             <button v-on:click="deleteTest(todo.id)">削除</button>
@@ -39,6 +41,8 @@ export default {
       todoList: null,
       updName: "",
       updTodo: "",
+      isUpdName: false,
+      isUpdTodo: false,
     };
   },
   mounted() {
@@ -60,8 +64,8 @@ export default {
       axios
         .put("http://localhost:8000/todoList", {
           id: todo.id,
-          name: this.updName,
-          todo: this.updTodo,
+          name: todo.name,
+          todo: todo.todo,
         })
         .then(() => this.getTest());
     },

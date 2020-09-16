@@ -18,10 +18,14 @@ export default {
   },
   methods: {
     createTodo: function() {
-      axios.post("http://localhost:8000/todoList", {
-        name: this.newName,
-        todo: this.newTodo,
-      });
+      if (!this.newName && !this.newTodo) {
+        alert("NameかTodoのどちらかは入力してください");
+      } else {
+        axios.post("http://localhost:8000/todoList", {
+          name: this.newName,
+          todo: this.newTodo,
+        });
+      }
     },
   },
 };
