@@ -3,10 +3,8 @@
     <form class="newTodoForm">
       <input v-model="newName" placeholder="new name" />
       <input v-model="newTodo" placeholder="new todo" />
-      <button v-on:click="createTodo()" />
+      <button v-on:click="createTodo()">新規登録</button>
     </form>
-    <p>new name is {{ newName }}</p>
-    <p>new todo is {{ newTodo }}</p>
   </div>
 </template>
 <script>
@@ -28,3 +26,19 @@ export default {
   },
 };
 </script>
+<style scoped>
+.insert {
+  margin: 40px 0 0;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+.newTodoForm {
+  background-color: #42b983;
+}
+</style>
