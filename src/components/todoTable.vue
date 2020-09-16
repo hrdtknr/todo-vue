@@ -21,7 +21,7 @@
             <input
               type="text"
               v-model="todo.todo"
-              v-on:keyup.enter="updateTest(todo)"
+              v-on:blur="updateTest(todo), (isUpdTodo = false)"
             />
           </td>
           <td>
