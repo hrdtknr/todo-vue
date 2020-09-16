@@ -6,7 +6,8 @@
           <th>ID</th>
           <th>NAME</th>
           <th>TODO</th>
-          <th></th>
+          <th>EDIT</th>
+          <th>DELETE</th>
         </tr>
       </thead>
       <tbody>
@@ -15,7 +16,14 @@
           <td>{{ todo.name }}</td>
           <td>{{ todo.todo }}</td>
           <td>
-            <button v-on:click="postTest()" />
+            <form>
+              <input v-model="updName" />
+              <input v-model="updTodo" />
+              <button v-on:click="updateTest(todo)" />
+            </form>
+          </td>
+          <td>
+            <button v-on:click="deleteTest(todo.id)" />
           </td>
         </tr>
       </tbody>
@@ -29,29 +37,28 @@ export default {
   data() {
     return {
       todoList: null,
+      updName: "",
+      updTodo: "",
     };
   },
   mounted() {
     axios
       .get("http://localhost:8000/todoList")
-      .then(
-        (response) => (
-          console.log("axios get"),
-          console.log(response),
-          (this.todoList = response.data)
-        )
-      )
+      .then((response) => (this.todoList = response.data))
       .catch((error) => console.log(error));
   },
   methods: {
-    test: function() {
-      console.log("test function");
+    updateTest: function(todo) {
+      axios.put("http://localhost:8000/todoList", {
+        id: todo.id,
+        name: this.updName + "update",
+        todo: this.updTodo + "update",
+      });
     },
-    postTest: function() {
-      axios.post("http://localhost:8000/todoList", {
-        id: 1,
-        name: "json name",
-        todo: "json todo",
+    deleteTest: function(delId) {
+      console.log("delete:", delId); // test
+      axios.delete("http://localhost:8000/todoList", {
+        id: delId,
       });
     },
   },
