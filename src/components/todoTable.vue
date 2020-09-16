@@ -11,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="todo in todoList" :key="todo.id">
+        <tr v-for="todo in todoList" v-bind:key="todo.id">
           <td>{{ todo.id }}</td>
           <td>{{ todo.name }}</td>
           <td>{{ todo.todo }}</td>
@@ -57,13 +57,25 @@ export default {
         .catch((error) => console.log(error));
     },
     updateTest: function(todo) {
-      axios
-        .put("http://localhost:8000/todoList", {
+      if (!this.updName) {
+        this.updName = todo.name;
+      }
+      if (!this.updTodo) {
+        this.updTodo = todo.todo;
+      }
+      if (!this.updName && !this.updTodo) {
+        axios.put("http://localhost:8000/todoList", {
+          id: todo.id,
+          name: "karamoji",
+          todo: "karamoji",
+        });
+      } else {
+        axios.put("http://localhost:8000/todoList", {
           id: todo.id,
           name: this.updName,
           todo: this.updTodo,
-        })
-        .then(() => this.getTest());
+        });
+      }
     },
     deleteTest: function(delId) {
       const params = { id: delId };
