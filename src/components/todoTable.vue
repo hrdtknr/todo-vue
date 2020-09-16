@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="table">
+    <table class="table" border="3">
       <thead>
         <tr>
           <th>ID</th>
@@ -19,11 +19,11 @@
             <form>
               <input v-model="updName" />
               <input v-model="updTodo" />
-              <button v-on:click="updateTest(todo)" />
+              <button v-on:click="updateTest(todo)">更新</button>
             </form>
           </td>
           <td>
-            <button v-on:click="deleteTest(todo.id)" />
+            <button v-on:click="deleteTest(todo.id)">削除</button>
           </td>
         </tr>
       </tbody>
@@ -42,25 +42,42 @@ export default {
     };
   },
   mounted() {
+    //ここのデータを再取得かな_関数へ移動？
     axios
       .get("http://localhost:8000/todoList")
       .then((response) => (this.todoList = response.data))
       .catch((error) => console.log(error));
   },
   methods: {
+    getTest: function() {
+      axios
+        .get("http://localhost:8000/todoList")
+        .then((response) => (this.todoList = response.data))
+        .then(() => this.getTest())
+        .catch((error) => console.log(error));
+    },
     updateTest: function(todo) {
-      axios.put("http://localhost:8000/todoList", {
-        id: todo.id,
-        name: this.updName + "update",
-        todo: this.updTodo + "update",
-      });
+      axios
+        .put("http://localhost:8000/todoList", {
+          id: todo.id,
+          name: this.updName,
+          todo: this.updTodo,
+        })
+        .then(() => this.getTest());
     },
     deleteTest: function(delId) {
-      console.log("delete:", delId); // test
-      axios.delete("http://localhost:8000/todoList", {
-        id: delId,
-      });
+      const params = { id: delId };
+      const qs = new URLSearchParams(params);
+      axios
+        .delete(`http://localhost:8000/todoList?${qs}`)
+        .then(() => this.getTest());
     },
   },
 };
 </script>
+<style scoped>
+.table {
+  background-color: aqua;
+  border: 1;
+}
+</style>
