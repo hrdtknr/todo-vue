@@ -6,21 +6,33 @@
           <th>ID</th>
           <th>NAME</th>
           <th>TODO</th>
-          <th>EDIT</th>
           <th>DELETE</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="todo in todoList" v-bind:key="todo.id">
           <td>{{ todo.id }}</td>
-          <td>{{ todo.name }}</td>
-          <td>{{ todo.todo }}</td>
-          <td>
-            <form>
-              <input v-model="updName" />
-              <input v-model="updTodo" />
-              <button v-on:click="updateTest(todo)">更新</button>
-            </form>
+          <td v-if="!isUpdName" v-on:dblclick="isUpdName = true">
+            {{ todo.name }}
+          </td>
+          <td v-else>
+            <input
+              type="text"
+              v-model="todo.name"
+              v-on:keyup.enter="(isUpdName = false), updateTest(todo)"
+            />
+          </td>
+
+          <td v-if="!isUpdTodo" v-on:dblclick="isUpdTodo = true">
+            {{ todo.todo }}
+          </td>
+          <td v-else>
+            <input
+              type="text"
+              v-model="todo.todo"
+              v-on:keyup.enter="(isUpdTodo = false), updateTest(todo)"
+              v-bind:key="todo.id"
+            />
           </td>
           <td>
             <button v-on:click="deleteTest(todo.id)">削除</button>
@@ -39,6 +51,9 @@ export default {
       todoList: null,
       updName: "",
       updTodo: "",
+      isUpdName: false,
+      isUpdTodo: false,
+      isTr: false,
     };
   },
   mounted() {
@@ -57,6 +72,7 @@ export default {
         .catch((error) => console.log(error));
     },
     updateTest: function(todo) {
+      /*
       if (!this.updName) {
         this.updName = todo.name;
       }
@@ -69,13 +85,13 @@ export default {
           name: "karamoji",
           todo: "karamoji",
         });
-      } else {
-        axios.put("http://localhost:8000/todoList", {
-          id: todo.id,
-          name: this.updName,
-          todo: this.updTodo,
-        });
-      }
+      } else {*/
+      axios.put("http://localhost:8000/todoList", {
+        id: todo.id,
+        name: todo.name,
+        todo: todo.todo,
+      });
+      //}
     },
     deleteTest: function(delId) {
       const params = { id: delId };
