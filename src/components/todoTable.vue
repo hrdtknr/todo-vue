@@ -19,10 +19,9 @@
             <input
               type="text"
               v-model="todo.name"
-              v-on:keyup.enter="(isUpdName = false), updateTest(todo)"
+              v-on:keyup.enter="(isUpdName = false), updateTodo(todo)"
             />
           </td>
-
           <td v-if="!isUpdTodo" v-on:dblclick="isUpdTodo = true">
             {{ todo.todo }}
           </td>
@@ -30,19 +29,18 @@
             <input
               type="text"
               v-model="todo.todo"
-              v-on:keyup.enter="(isUpdTodo = false), updateTest(todo)"
+              v-on:keyup.enter="(isUpdTodo = false), updateTodo(todo)"
               v-bind:key="todo.id"
             />
           </td>
           <td>
-            <button v-on:click="deleteTest(todo.id)">削除</button>
+            <button v-on:click="deleteTodo(todo.id)">削除</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 export default {
@@ -53,52 +51,34 @@ export default {
       updTodo: "",
       isUpdName: false,
       isUpdTodo: false,
-      isTr: false,
     };
   },
   mounted() {
-    //ここのデータを再取得かな_関数へ移動？
     axios
       .get("http://localhost:8000/todoList")
       .then((response) => (this.todoList = response.data))
       .catch((error) => console.log(error));
   },
   methods: {
-    getTest: function() {
+    getTodo: function() {
       axios
         .get("http://localhost:8000/todoList")
         .then((response) => (this.todoList = response.data))
-        .then(() => this.getTest())
         .catch((error) => console.log(error));
     },
-    updateTest: function(todo) {
-      /*
-      if (!this.updName) {
-        this.updName = todo.name;
-      }
-      if (!this.updTodo) {
-        this.updTodo = todo.todo;
-      }
-      if (!this.updName && !this.updTodo) {
-        axios.put("http://localhost:8000/todoList", {
-          id: todo.id,
-          name: "karamoji",
-          todo: "karamoji",
-        });
-      } else {*/
+    updateTodo: function(todo) {
       axios.put("http://localhost:8000/todoList", {
         id: todo.id,
         name: todo.name,
         todo: todo.todo,
       });
-      //}
     },
-    deleteTest: function(delId) {
+    deleteTodo: function(delId) {
       const params = { id: delId };
       const qs = new URLSearchParams(params);
       axios
         .delete(`http://localhost:8000/todoList?${qs}`)
-        .then(() => this.getTest());
+        .then(() => this.getTodo());
     },
   },
 };
@@ -106,6 +86,5 @@ export default {
 <style scoped>
 .table {
   background-color: aqua;
-  border: 1;
 }
 </style>
