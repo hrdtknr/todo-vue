@@ -27,7 +27,6 @@ func main() {
 	}
 	defer db.Close()
 
-	//http.Handle("/", http.FileServer(http.Dir("./src")))
 	http.HandleFunc("/todoList", handleIndex)
 	port := "8000"
 	log.Printf("listening port %s", port)
@@ -66,6 +65,7 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 		}
 	case http.MethodDelete:
 		id, err := strconv.Atoi(r.URL.Query().Get("id"))
+		log.Println("delete id = ", id) // test
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -75,10 +75,12 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case http.MethodPut:
+		log.Println("put") // test
 		if err := json.NewDecoder(r.Body).Decode(&todoDecode); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+		log.Println(todoDecode) // test
 		if err := updateTodo(todoDecode.ID, todoDecode.Name, todoDecode.Todo); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

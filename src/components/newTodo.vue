@@ -20,8 +20,6 @@ export default {
   },
   methods: {
     createTodo: function() {
-      // ok
-      console.log("uanirweganiug");
       axios.post("http://localhost:8000/todoList", {
         name: this.newName,
         todo: this.newTodo,
