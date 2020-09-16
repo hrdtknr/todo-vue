@@ -1,14 +1,12 @@
 <template>
   <div>
-    <v-card-actions>
-      <v-btn @click="sendRequest()">test</v-btn>
-    </v-card-actions>
     <table class="table">
       <thead>
         <tr>
           <th>ID</th>
           <th>NAME</th>
           <th>TODO</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -16,6 +14,9 @@
           <td>{{ todo.id }}</td>
           <td>{{ todo.name }}</td>
           <td>{{ todo.todo }}</td>
+          <td>
+            <button v-on:click="postTest()" />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -37,7 +38,10 @@ export default {
       .catch((error) => console.log(error));
   },
   methods: {
-    sendRequest: function() {
+    test: function() {
+      console.log("test function");
+    },
+    postTest: function() {
       axios.post("http://localhost:8000/todoList", {
         id: 1,
         name: "json name",
