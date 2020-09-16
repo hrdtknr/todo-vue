@@ -17,7 +17,7 @@
           <td>{{ todo.todo }}</td>
           <td>
             <form>
-              <input v-model="updName" placeholder="updName" />
+              <input v-model="updName" />
               <input v-model="updTodo" />
               <button v-on:click="updateTest(todo)">更新</button>
             </form>
@@ -57,7 +57,12 @@ export default {
         .catch((error) => console.log(error));
     },
     updateTest: function(todo) {
-      console.log(todo);
+      if (!this.updName) {
+        this.updName = todo.name;
+      }
+      if (!this.updTodo) {
+        this.updTodo = todo.todo;
+      }
       if (!this.updName && !this.updTodo) {
         axios.put("http://localhost:8000/todoList", {
           id: todo.id,
