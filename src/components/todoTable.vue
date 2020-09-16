@@ -6,23 +6,21 @@
           <th>ID</th>
           <th>NAME</th>
           <th>TODO</th>
+          <th>EDIT</th>
           <th>DELETE</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="todo in todoList" :key="todo.id">
+        <tr v-for="todo in todoList" v-bind:key="todo.id">
           <td>{{ todo.id }}</td>
           <td>{{ todo.name }}</td>
-
-          <td v-if="!isUpdTodo" v-on:dblclick="isUpdTodo = true">
-            {{ todo.todo }}
-          </td>
-          <td v-else>
-            <input
-              type="text"
-              v-model="todo.todo"
-              v-on:blur="updateTest(todo), (isUpdTodo = false)"
-            />
+          <td>{{ todo.todo }}</td>
+          <td>
+            <form>
+              <input v-model="updName" placeholder="updName" />
+              <input v-model="updTodo" />
+              <button v-on:click="updateTest(todo)">更新</button>
+            </form>
           </td>
           <td>
             <button v-on:click="deleteTest(todo.id)">削除</button>
@@ -41,8 +39,6 @@ export default {
       todoList: null,
       updName: "",
       updTodo: "",
-      isUpdName: false,
-      isUpdTodo: false,
     };
   },
   mounted() {
@@ -61,13 +57,20 @@ export default {
         .catch((error) => console.log(error));
     },
     updateTest: function(todo) {
-      axios
-        .put("http://localhost:8000/todoList", {
+      console.log(todo);
+      if (!this.updName && !this.updTodo) {
+        axios.put("http://localhost:8000/todoList", {
           id: todo.id,
-          name: todo.name,
-          todo: todo.todo,
-        })
-        .then(() => this.getTest());
+          name: "karamoji",
+          todo: "karamoji",
+        });
+      } else {
+        axios.put("http://localhost:8000/todoList", {
+          id: todo.id,
+          name: this.updName,
+          todo: this.updTodo,
+        });
+      }
     },
     deleteTest: function(delId) {
       const params = { id: delId };
