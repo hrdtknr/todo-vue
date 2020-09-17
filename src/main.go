@@ -53,19 +53,16 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(res))
 	case http.MethodPost:
-		log.Println("Post") // test
 		if err := json.NewDecoder(r.Body).Decode(&todoDecode); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		log.Println(todoDecode.Name, todoDecode.Todo) // test
 		if err := saveTodo(todoDecode.Name, todoDecode.Todo); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	case http.MethodDelete:
 		id, err := strconv.Atoi(r.URL.Query().Get("id"))
-		log.Println("delete id = ", id) // test
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -75,12 +72,10 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	case http.MethodPut:
-		log.Println("put") // test
 		if err := json.NewDecoder(r.Body).Decode(&todoDecode); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		log.Println(todoDecode) // test
 		if err := updateTodo(todoDecode.ID, todoDecode.Name, todoDecode.Todo); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
