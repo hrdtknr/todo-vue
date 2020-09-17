@@ -14,19 +14,10 @@
         <tr v-for="todo in todoList" v-bind:key="todo.id">
           <td>{{ todo.id }}</td>
           <td>
-            <input
-              type="text"
-              v-model="todo.name"
-              v-on:keyup.enter="(isUpdName = false), updateTodo(todo)"
-            />
+            <input v-model="todo.name" v-on:keyup.enter="updateTodo(todo)" />
           </td>
           <td>
-            <input
-              type="text"
-              v-model="todo.todo"
-              v-on:keyup.enter="(isUpdTodo = false), updateTodo(todo)"
-              v-bind:key="todo.id"
-            />
+            <input v-model="todo.todo" v-on:keyup.enter="updateTodo(todo)" />
           </td>
           <td>
             <button v-on:click="updateTodo(todo)">更新</button>
@@ -47,9 +38,6 @@ export default {
       todoList: null,
       updName: "",
       updTodo: "",
-      isUpdName: false,
-      isUpdTodo: false,
-      borderColor: "black",
     };
   },
   mounted() {
@@ -66,21 +54,21 @@ export default {
         .catch((error) => console.log(error));
     },
     updateTodo: function(todo) {
-      axios.put("http://localhost:8000/todoList", {
-        id: todo.id,
-        name: todo.name,
-        todo: todo.todo,
-      });
+      axios
+        .put("http://localhost:8000/todoList", {
+          id: todo.id,
+          name: todo.name,
+          todo: todo.todo,
+        })
+        .catch((error) => console.log(error));
     },
     deleteTodo: function(delId) {
       const params = { id: delId };
       const qs = new URLSearchParams(params);
       axios
         .delete(`http://localhost:8000/todoList?${qs}`)
-        .then(() => this.getTodo());
-    },
-    setBorderColor: function(color) {
-      this.borderColor = color;
+        .then(() => this.getTodo())
+        .catch((error) => console.log(error));
     },
   },
 };
@@ -88,5 +76,7 @@ export default {
 <style scoped>
 .table {
   background-color: aqua;
+  padding: 10px;
+  margin: 10px;
 }
 </style>

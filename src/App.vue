@@ -1,5 +1,5 @@
 <template>
-  <div class="divTable">
+  <div class="app">
     <newTodo></newTodo>
     <todoTable></todoTable>
   </div>
@@ -13,28 +13,12 @@ export default {
     todoTable,
     newTodo,
   },
-  data() {
-    return {
-      msg: "",
-      data: "",
-    };
-  },
-  methods: {
-    clear() {
-      this.msg = "";
-    },
-  },
-  created() {
-    fetch("http://localhost:8000/todoList")
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        this.data = json;
-      })
-      .catch((err) => {
-        this.data = err; // エラー処理
-      });
-  },
 };
 </script>
+<style scoped>
+.app {
+  background-color: greenyellow;
+  padding: 10px;
+  width: 100%;
+}
+</style>

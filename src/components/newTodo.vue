@@ -31,18 +31,9 @@ export default {
 };
 </script>
 <style scoped>
-.insert {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
 .newTodoForm {
   background-color: blueviolet;
+  padding: 10px;
+  width: 100%;
 }
 </style>
